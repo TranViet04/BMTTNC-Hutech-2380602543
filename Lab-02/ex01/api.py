@@ -1,22 +1,22 @@
 from flask import Flask, request, jsonify
-from cipher.railfence import RailFenceCipher
-railfence_cipher = RailFenceCipher()
+from cipher.transposition import TranspositionCipher
+transposition_cipher = TranspositionCipher()
 
-@app.route('/api/railfence/encrypt', methods=['POST'])
-def encrypt():
-    data = request.json
-    plain_text = data['plain_text']
-    key = int(data['key'])
-    encrypted_text = railfence_cipher.rail_fence_encrypt(plain_text, key)
+@app.route('/api/transposition/encrypt', methods=['POST'])
+def transposition_encrypt():
+    data = request.get_json()
+    plain_text = data.get('plain_text')
+    key = int(data.get('key'))
+    encrypted_text = transposition_cipher.encrypt(plain_text, key)
     return jsonify({'encrypted_text': encrypted_text})
 
 
-@app.route('/api/railfence/decrypt', methods=['POST'])
-def decrypt():
-    data = request.json
-    cipher_text = data['cipher_text']
-    key = int(data['key'])
-    decrypted_text = railfence_cipher.rail_fence_decrypt(cipher_text, key)
+@app.route('/api/transposition/decrypt', methods=['POST'])
+def transposition_decrypt():
+    data = request.get_json()
+    cipher_text = data.get('cipher_text')
+    key = int(data.get('key'))
+    decrypted_text = transposition_cipher.decrypt(cipher_text, key)
     return jsonify({'decrypted_text': decrypted_text})
 #main function
 if __name__ == "__main__":
